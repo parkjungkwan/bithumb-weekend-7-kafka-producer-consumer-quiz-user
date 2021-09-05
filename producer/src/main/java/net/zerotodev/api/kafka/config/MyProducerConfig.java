@@ -26,9 +26,17 @@ public class MyProducerConfig {
     public DirectChannel producerChannel(){
         return new DirectChannel();
     }
+
+    // https://kafka.apache.org/26/javadoc/org/apache/kafka/clients/producer/ProducerConfig.html
+
     @Bean
     public Map<String,Object> producerConfig(){
-        return null;
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapServers);
+        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        properties.put(ProducerConfig.LINGER_MS_CONFIG, 1);
+        return properties;
     }
     @Bean
     public ProducerFactory<String, String> producerFactory(){
@@ -42,6 +50,7 @@ public class MyProducerConfig {
     @ServiceActivator(inputChannel = "producerChannel")
     public MessageHandler kafkaMessageHandler(){
         KafkaProducerMessageHandler<String, String> handler = new KafkaProducerMessageHandler<>(kafkaTemplate());
-        return null;
+        handler.setMessageKeyExpression(new LiteralExpression("kafka-integration"));
+        return handler;
     }
 }
