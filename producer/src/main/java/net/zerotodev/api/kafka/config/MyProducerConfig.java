@@ -47,7 +47,7 @@ public class MyProducerConfig {
         return new KafkaTemplate<>(producerFactory());
     }
     @Bean
-    @ServiceActivator(inputChannel = "producerChannel")
+    @ServiceActivator(inputChannel = "messageChannel")
     public MessageHandler kafkaMessageHandler(){
         KafkaProducerMessageHandler<String, String> handler = new KafkaProducerMessageHandler<>(kafkaTemplate());
         handler.setMessageKeyExpression(new LiteralExpression("kafka-integration"));
