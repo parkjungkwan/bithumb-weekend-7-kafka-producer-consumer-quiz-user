@@ -2,6 +2,7 @@ package net.zerotodev.api.kafka.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.zerotodev.api.kafka.domain.User;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
