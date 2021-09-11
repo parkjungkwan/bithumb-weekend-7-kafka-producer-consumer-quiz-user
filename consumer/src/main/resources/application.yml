@@ -1,10 +1,11 @@
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
-    topic: "QUIZ-SHOW"
-  sleuth:
-    messaging:
-      kafka:
-        enable: false
-
-
+    admin:
+      properties:
+        spring:
+          json:
+            value.default.type: net.zerotodev.api.consumer.domain.User
+  application:
+    name: kafka-consumer
+server:
+  port: 9091

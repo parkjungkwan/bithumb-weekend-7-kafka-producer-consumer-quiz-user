@@ -19,23 +19,13 @@ import org.springframework.stereotype.Service;
 
 @Configuration
 public class MyProducerConfig {
-    @Value("${spring.kafka.bootstrap-servers}")
-    private String bootStrapServers;
-
-    @Bean
-    public DirectChannel producerChannel(){
-        return new DirectChannel();
-    }
-
-    // https://kafka.apache.org/26/javadoc/org/apache/kafka/clients/producer/ProducerConfig.html
 
     @Bean
     public Map<String,Object> producerConfig(){
         Map<String, Object> properties = new HashMap<>();
-        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapServers);
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        properties.put(ProducerConfig.LINGER_MS_CONFIG, 1);
         return properties;
     }
     @Bean
@@ -45,12 +35,5 @@ public class MyProducerConfig {
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate(){
         return new KafkaTemplate<>(producerFactory());
-    }
-    @Bean
-    @ServiceActivator(inputChannel = "messageChannel")
-    public MessageHandler kafkaMessageHandler(){
-        KafkaProducerMessageHandler<String, String> handler = new KafkaProducerMessageHandler<>(kafkaTemplate());
-        handler.setMessageKeyExpression(new LiteralExpression("kafka-integration"));
-        return handler;
     }
 }
